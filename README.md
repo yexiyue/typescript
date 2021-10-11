@@ -43,7 +43,7 @@ npm i -g typescript
 
 typescript:就是用来解析TS的工具包。提供了**tsc**命令,实现了TS > JS的转化。
 
-**4.简化执行TS**
+### 4.简化执行TS
 
 问题:每次修改代码后，都要重复执行两个命令才能执行TS代码，太繁琐。
 
@@ -52,6 +52,8 @@ typescript:就是用来解析TS的工具包。提供了**tsc**命令,实现了TS
 1 tsc hello. ts
 
 2 node hello.js
+
+**3.安装包@types/node**
 
 **简化方式:使用ts-node包，"直接” 在Node.js中执行TS代码**。
 
