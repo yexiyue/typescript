@@ -2781,6 +2781,120 @@ console.log(event.target)
 
     - 使用T extends MyInter表示泛型T必须是MyInter的子类，不一定非要使用接口类和抽象类同样适用。
 
+# 暴露数据和引入数据
+
+## 1.方法一
+
+```typescript
+/**
+ * 新建一个db.ts 将数据库方法封装并且暴露出来
+ * 暴露一个获取数据的方法
+ */
+export function getData():any[]{
+    return [
+        {
+            name:'123',
+            ahe:20
+        },
+        {
+            name:'123425',
+            age:30
+        }
+    ]
+}
+
+export function saveData():boolean{
+    console.log('保存数据成功！')
+    return true;
+}
+
+/**
+ * 在index.ts文件中引入
+ * 在这里引入我暴露的函数
+ */
+
+ import {getData} from './modules/db'
+
+ console.log(getData());
+
+  saveData();
+```
+
+## 2.方法二
+
+```typescript
+/**
+ * 暴露一个获取数据的方法
+ */
+function getData():any[]{
+    return [
+        {
+            name:'123',
+            ahe:20
+        },
+        {
+            name:'123425',
+            age:30
+        }
+    ]
+}
+
+function saveData():boolean{
+    console.log('保存数据成功！')
+    return true;
+}
+
+export {getData, saveData}
+
+/**
+ * 在index.ts文件中引入
+ * 在这里引入我暴露的函数
+ */
+
+ import {getData} from './modules/db'
+
+ console.log(getData());
+
+  saveData();
+
+```
+
+## 3.方法三
+
+```typescript
+/**
+ * 使用export default 暴露数据
+ */
+function getData():any[]{
+    return [
+        {
+            name:'123',
+            ahe:20
+        },
+        {
+            name:'123425',
+            age:30
+        }
+    ]
+}
+
+function saveData():boolean{
+    console.log('保存数据成功！')
+    return true;
+}
+
+export default getData;
+
+/**
+ * export default 引入数据
+ */
+
+ import getData from './modules/db'
+
+
+ console.log(getData());
+```
+
 
 # tsconfig.json配置详解
 
