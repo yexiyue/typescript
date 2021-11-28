@@ -3022,3 +3022,94 @@ export default getData;
   "references": [],  // 一个对象数组，指定要引用的项目
 }
 ```
+
+# 装饰器
+
+
+
+```typescript
+//定义联合类型
+type Data = string | number | object;
+
+interface MyNode {
+  data: Data;
+  next: MyNode;
+}
+
+class LinkedList<t extends Data>{
+  public length: number = 0;
+  public header: MyNode = null;
+  protected node = class implements MyNode {
+    data: Data;
+    next: MyNode = null;
+    constructor(data: Data) {
+      this.data = data;
+    }
+  }
+  //尾插法
+  append(data: t) {
+    //1.创建新节点
+    const newNode = new this.node(data);
+    //2.追加新节点
+    if (this.length == 0) {
+      this.header = newNode
+    } else {
+      let currentNode: MyNode = this.header;
+      while (currentNode.next != null) {
+        currentNode = currentNode.next;
+      }
+      //最后一个节点指向新节点
+      currentNode.next = newNode;
+    }
+    //3.追加完新节点后，链表长度+1
+    this.length++;
+  }
+  @toStr()
+  toString(): string {
+    let currentNode: MyNode = this.header;
+    let res: string = '';
+    while (currentNode) {
+      res += currentNode.data + '-->'
+      currentNode = currentNode.next
+    }
+    return res.slice(0, -3);
+  }
+  //插入
+  insert(position:number,data:t){
+
+  }
+}
+
+//创建tostring装饰工厂
+function toStr() {
+  return function (target: any, propertyKey, descriptor: PropertyDescriptor) {
+    const method = descriptor.value;
+    //获取当前target上的描述，直接打印target用处不大
+    console.log(Object.getOwnPropertyDescriptors(target))
+    //在descriptor.value函数里，this指向当前类的实例,其他地方this指空
+    descriptor.value = function (...args: any[]) {
+      args = args.map(item => String(item))
+      console.log('参数=>', args)
+      try {
+        let olddescriptor = Object.getOwnPropertyDescriptors(target)
+        //console.log(olddescriptor)
+        console.log(this)
+      } finally {
+        return method.apply(this, args)
+      }
+    }
+  }
+}
+
+
+
+//测试
+const linkedlist = new LinkedList<string>();
+linkedlist.append('A')
+linkedlist.append('B')
+linkedlist.append('C')
+console.log(linkedlist.toString())
+
+```
+
+
